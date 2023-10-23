@@ -5,8 +5,10 @@ from helpers.phonenumber import validate_phonenumber
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
     phone = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
+    language = db.Column(db.String)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
     role = db.Column(db.String, nullable=True)
@@ -15,7 +17,9 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
     
-    def update(self):
+    def update(self, name=None, language=None):
+        self.name = name or self.name
+        self.language = language or self.language
         self.updated_at = db.func.now()
         db.session.commit()
     
