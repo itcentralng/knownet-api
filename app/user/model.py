@@ -1,10 +1,11 @@
 import jwt, string, secrets, bcrypt
 from datetime import datetime
 from app import app, db, secret
+from helpers.phonenumber import validate_phonenumber
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String, unique=True, nullable=True)
+    phone = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
@@ -56,12 +57,13 @@ class User(db.Model):
         return cls.query.filter_by(id=id).first()
     
     @classmethod
-    def get_by_email(self, email):
-        return User.query.filter(User.email==email).first()
+    def get_by_phone(self, phone):
+        print(phone)
+        return User.query.filter(User.phone.ilike(f"%{phone[1:]}%")).first()
     
     @classmethod
-    def create(cls, email, password, role):
-        user = cls(email=email, password=password, role=role)
+    def create(cls, phone, password, role):
+        user = cls(phone=validate_phonenumber(phone), password=password, role=role)
         user.hash_password()
         user.save()
         return user

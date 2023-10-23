@@ -9,8 +9,8 @@ bp = Blueprint('user', __name__)
 def login():
     data = request.json
     
-    email = data.get('email')
-    user = User.get_by_email(email)
+    phone = data.get('phone')
+    user = User.get_by_phone(phone)
     
     if user is None:
         return jsonify({'message': 'User not found'}), 404
@@ -35,10 +35,10 @@ def reset_password():
 @bp.post('/register')
 def register():
     data = request.json
-    user = User.get_by_email(data.get('email'))
+    user = User.get_by_phone(data.get('phone'))
     if user is not None:
         return jsonify({'message': 'User already exists'}), 400
-    user = User.create(data.get('email'), data.get('password'), data.get('role'))
+    user = User.create(data.get('phone'), data.get('password'), data.get('role', 'user'))
     if user is not None:
         return jsonify({'message': 'User created'}), 201
     return jsonify({'message': 'User not created'}), 400

@@ -13,8 +13,8 @@ from celery.schedules import crontab
 
 import os
 import smtplib, ssl
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from phone.mime.text import MIMEText
+from phone.mime.multipart import MIMEMultipart
 
 
 @celery.task
@@ -33,11 +33,11 @@ def send_mail(subject, text, html, recipients, attachments=[]):
     part2 = MIMEText(html, "html")
 
     # Add HTML/plain-text parts to MIMEMultipart message
-    # The email client will try to render the last part first
+    # The phone client will try to render the last part first
     message.attach(part1)
     message.attach(part2)
 
-    # Create secure connection with server and send email
+    # Create secure connection with server and send phone
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(os.environ.get('MAIL_SERVER'), os.environ.get('MAIL_PORT'), context=context) as server:
         server.login(sender, password)
