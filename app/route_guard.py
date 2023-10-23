@@ -36,3 +36,20 @@ def auth_required(*roles_required):
             return f(*args, **kwargs)
         return decorated
     return requires_auth
+
+def special_auth_required(*roles_required):
+    def requires_auth(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            phonenumber = request.form.get('from')
+            if not phonenumber:
+                return jsonify({"message": "Missing Authorized Phone Number"}), 401
+            user = User.get_by_phone(phonenumber)
+            # check role
+            if roles_required:
+                if user.role not in roles_required:
+                    return jsonify({"message": "Unauthorized to perform action"}), 401
+            g.user = user
+            return f(*args, **kwargs)
+        return decorated
+    return requires_auth
