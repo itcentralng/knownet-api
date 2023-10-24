@@ -3,6 +3,7 @@ from app.user.model import User
 
 from app.ussd.model import *
 from app.ussd.schema import *
+from helpers.sms import send_sms
 
 bp = Blueprint('ussd', __name__)
 
@@ -133,5 +134,7 @@ def do_change_user_password(**kwargs):
     user.password = new_password
     user.hash_password()
     user.update(is_set=True)
+    send_sms(user.phone, """Welcome to KnowNet
+             Start by sending your first question.""")
     Ussd.create_or_update(kwargs['session_id'], 'start', 'confirm_user_password')
     return start(**kwargs)
