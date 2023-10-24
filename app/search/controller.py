@@ -11,7 +11,8 @@ bp = Blueprint('search', __name__)
 @bp.post('/search')
 @special_auth_required()
 def create_search():
-    shortcode = request.form
+    shortcode = request.form.get("to")
+    print(shortcode)
     question = request.form.get('text')
     answer = do_search(question, g.user.language)
     send_sms(g.user.phone, answer, sender=shortcode)
