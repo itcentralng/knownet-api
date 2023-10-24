@@ -8,3 +8,4 @@ FLASK SETUP LOG
 2023-10-23 19:53:37: langchain installed successfully
 2023-10-23 19:53:50: openai installed successfully
 2023-10-23 19:54:18: google-search-results installed successfully
+2023-10-23 23:59:46: Blueprint ussd added successfully

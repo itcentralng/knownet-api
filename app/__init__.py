@@ -27,6 +27,8 @@ from app.user.controller import bp as user_bp
 app.register_blueprint(user_bp)
 from app.search.controller import bp as search_bp
 app.register_blueprint(search_bp)
+from app.ussd.controller import bp as ussd_bp
+app.register_blueprint(ussd_bp)
 
 # Error handlers
 # from .error_handlers import *

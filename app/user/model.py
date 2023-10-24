@@ -9,6 +9,7 @@ class User(db.Model):
     phone = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     language = db.Column(db.String)
+    is_set = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
     role = db.Column(db.String, nullable=True)
@@ -17,9 +18,10 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
     
-    def update(self, name=None, language=None):
+    def update(self, name=None, language=None, is_set=None):
         self.name = name or self.name
         self.language = language or self.language
+        self.is_set = is_set or self.is_set
         self.updated_at = db.func.now()
         db.session.commit()
     
@@ -66,8 +68,8 @@ class User(db.Model):
         return User.query.filter(User.phone.ilike(f"%{phone[1:]}%")).first()
     
     @classmethod
-    def create(cls, phone, password, role):
-        user = cls(phone=validate_phonenumber(phone), password=password, role=role)
+    def create(cls, name, language, phone, password, role):
+        user = cls(name=name, language=language, phone=validate_phonenumber(phone), password=password, role=role)
         user.hash_password()
         user.save()
         return user
