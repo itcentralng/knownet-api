@@ -36,16 +36,12 @@ def start(**kwargs):
         response += "1. Update your name\n"
         response += "2. Update your language\n"
         response += "3. Change your password\n"
-    elif (not user.is_set) and (user.name or user.language):
+    else:
         Ussd.create_or_update(kwargs['session_id'], 'select_service', previous='start')
-        response = f"CON Welcome back {user.name} what do you want to do today?.\n"
+        response = f"CON Welcome to KnowNet.\n"
         response += "1. Set your name\n"
         response += "2. Set your language\n"
         response += "3. Set your password\n"
-    else:
-        Ussd.create_or_update(kwargs['session_id'], 'select_language', previous='start')
-        response = f"CON Welcome to KnowNet.\n"
-        response += "What is your name?\n"
     return response
 
 def select_service(**kwargs):
@@ -79,6 +75,11 @@ def update_user_name(**kwargs):
 
 def update_user_language(**kwargs):
     response = "CON Enter your preferred language:\n"
+    response +="""
+1. English
+2. Hausa
+3. Igbo
+4. Yoruba"""
     Ussd.create_or_update(kwargs['session_id'], 'do_update_user_language', 'start')
     return response
 
