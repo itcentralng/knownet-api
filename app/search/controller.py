@@ -12,7 +12,7 @@ bp = Blueprint('search', __name__)
 @special_auth_required()
 def create_search():
     question = request.form.get('text')
-    answer = do_search(question)
+    answer = do_search(question, g.user.language)
     send_sms(g.user.phone, answer)
     return Response(status=200)
 
