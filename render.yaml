@@ -1,0 +1,4 @@
+runtime: python
+build_commands:
+  - pip install -r requirements.txt
+start_command: gunicorn -b :5000 main:app
